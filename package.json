@@ -1,0 +1,22 @@
+{
+  "name": "climatempo",
+  "version": "1.0.0",
+  "description": "Projeto desenvolvido para práticar um pouco de NODE.JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devrsantos/climaTempo.git"
+  },
+  "author": "Renan Augusto dos Santos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devrsantos/climaTempo/issues"
+  },
+  "homepage": "https://github.com/devrsantos/climaTempo#readme",
+  "devDependencies": {
+    "express": "^4.18.1"
+  }
+}
