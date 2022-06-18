@@ -24,10 +24,16 @@ router.post("/post", (request, response) => {
 
     queryString = post(nomeProduto, valorProduto);
 
-    connection.query(queryString, (erroSQL, returnSQL) => {
-        if (erroSQL) throw erroSQL;
-        response.json(returnSQL);
-    });
+    if (nomeProduto != undefined && valorProduto != undefined) {
+        connection.query(queryString, (erroSQL, returnSQL) => {
+            if (erroSQL) throw erroSQL;
+            response.json({"Success": "Usuário Cadastrado com Sucesso"});
+            response.status(201).end();
+        });
+    }else {
+        response.json({"Error": "Verifique os parâmentros informados"});
+        response.statusCode(404).end();
+    }
 
 });
 
