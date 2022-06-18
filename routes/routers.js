@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const { connection } = require("./../dbconnection");
 const { get, post, del, put } = require("./../syntaxeSQL");
 
@@ -19,7 +18,7 @@ router.get("/get", (request, response) => {
 });
 
 router.post("/post", (request, response) => {
-    
+
     const nomeProduto = request.body.nome_produto;
     const valorProduto = request.body.valor_produto;
 
@@ -47,7 +46,7 @@ router.delete("/delete", (request, response) => {
 router.put("/put", (request, response) => {
     const newValue = request.body.valor_produto;
     const idProduto = request.query.id_produto;
-    
+
     queryString = put(newValue, idProduto);
 
     connection.query(queryString, (erroSQL, returnSQL) => {
