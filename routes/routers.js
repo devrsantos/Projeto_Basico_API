@@ -58,15 +58,19 @@ router.delete("/delete", (request, response) => {
 });
 
 router.put("/put", (request, response) => {
-    const newValue = request.body.valor_produto;
-    const idProduto = request.query.id_produto;
+    if (request.body.valor_produto != undefined && request.query.id_produto != undefined) {
+        const newValue = request.body.valor_produto;
+        const idProduto = request.query.id_produto;
 
-    queryString = put(newValue, idProduto);
+        queryString = put(newValue, idProduto);
 
-    connection.query(queryString, (erroSQL, returnSQL) => {
-        if (erroSQL) throw erroSQL;
-        response.json(returnSQL);
-    });
+        connection.query(queryString, (erroSQL, returnSQL) => {
+            if (erroSQL) throw erroSQL;
+            response.status(200).json(returnSQL);
+        });
+    } else {
+        response.status(401).json({"Error": "Verifique os parâmentros informados"});
+    }
 });
 
 module.exports = router;
