@@ -12,41 +12,55 @@ router.get("/get", (request, response) => {
     
     connection.query(queryString, (erroSQL, returnSQL) => {
         if (erroSQL) throw erroSQL;
-        response.json(returnSQL);
+        if (returnSQL !== "") {
+            response.status(200);
+            response.json(returnSQL);
+        } else {
+            response.status(404);
+            response.json({Error: "Não foi possível retornar as informações solicitadas"});
+        }
     });
 
 });
 
 router.post("/post", (request, response) => {
-
+    
+    if (request.body.nome_produto != undefined && request.body.valor_produto != undefined) {
+    
     const nomeProduto = request.body.nome_produto;
     const valorProduto = request.body.valor_produto;
 
     queryString = post(nomeProduto, valorProduto);
-
-    if (nomeProduto != undefined && valorProduto != undefined) {
+ 
         connection.query(queryString, (erroSQL, returnSQL) => {
             if (erroSQL) throw erroSQL;
-            response.json({"Success": "Usuário Cadastrado com Sucesso"});
-            response.status(201).end();
+            response.status(201);
+            response.json(returnSQL);
         });
     }else {
+        response.status(401);
         response.json({"Error": "Verifique os parâmentros informados"});
-        response.statusCode(404).end();
     }
 
 });
 
 router.delete("/delete", (request, response) => {
 
-    const idProduto = request.query.id_produto;
+    if (request.query.id_produto) {
+        const idProduto = request.query.id_produto;
 
-    queryString = del(idProduto);
-
-    connection.query(queryString, (erroSQL, returnSQL) => {
-        if (erroSQL) throw erroSQL;
-        response.json(returnSQL);
-    });
+        queryString = del(idProduto);
+        if (idProduto != undefined) {
+            connection.query(queryString, (erroSQL, returnSQL) => {
+                if (erroSQL) throw erroSQL;
+                response.status(200);
+                response.json(returnSQL);
+            });
+        }  
+    } else {
+        response.status(401);
+        response.json({"Error": "Verifique os parâmentros informados"})
+    }
 });
 
 router.put("/put", (request, response) => {
