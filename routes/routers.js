@@ -13,11 +13,9 @@ router.get("/get", (request, response) => {
     connection.query(queryString, (erroSQL, returnSQL) => {
         if (erroSQL) throw erroSQL;
         if (returnSQL !== "") {
-            response.status(200);
-            response.json(returnSQL);
+            response.status(200).json(returnSQL);
         } else {
-            response.status(404);
-            response.json({Error: "Não foi possível retornar as informações solicitadas"});
+            response.status(404).json({Error: "Não foi possível retornar as informações solicitadas"});
         }
     });
 
@@ -34,32 +32,28 @@ router.post("/post", (request, response) => {
  
         connection.query(queryString, (erroSQL, returnSQL) => {
             if (erroSQL) throw erroSQL;
-            response.status(201);
-            response.json(returnSQL);
+            response.status(201).json(returnSQL);
         });
     }else {
-        response.status(401);
-        response.json({"Error": "Verifique os parâmentros informados"});
+        response.status(401).json({"Error": "Verifique os parâmentros informados"});
     }
-
 });
 
 router.delete("/delete", (request, response) => {
-
-    if (request.query.id_produto) {
+    console.log(request.query.id_produto);
+    if (request.query.id_produto !== undefined) {
         const idProduto = request.query.id_produto;
 
         queryString = del(idProduto);
+
         if (idProduto != undefined) {
             connection.query(queryString, (erroSQL, returnSQL) => {
                 if (erroSQL) throw erroSQL;
-                response.status(200);
-                response.json(returnSQL);
+                response.status(200).json(returnSQL);
             });
         }  
     } else {
-        response.status(401);
-        response.json({"Error": "Verifique os parâmentros informados"})
+        response.status(401).json({"Error": "Verifique os parâmentros informados"});
     }
 });
 
