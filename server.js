@@ -1,4 +1,5 @@
-const rotas = require("./routes/routers");
+const rotasProdutos = require("./routes/rotasProdutos");
+const rotasUsuarios = require("./routes/rotasUsuarios");
 const app = require("express")();
 const bodyParser = require("body-parser");
 
@@ -10,6 +11,7 @@ app.use((request, response, next) => {
     response.append('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
-app.use("/", rotas);
+app.use("/produtos", rotasProdutos);
+app.use("/usuarios", rotasUsuarios);
 
 module.exports = app;

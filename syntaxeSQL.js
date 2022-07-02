@@ -2,7 +2,7 @@ const get = () => {
     return `SELECT * from loja.produtos`;
 };
 
-const getID = params => {
+const getOne = params => {
     return `SELECT * from loja.produtos WHERE id_produto= ${params}`;
 };
 
@@ -20,7 +20,7 @@ const put = (newValue, params) => {
 
 module.exports = {
     get,
-    getID,
+    getOne,
     post,
     del,
     put
