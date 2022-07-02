@@ -13,7 +13,6 @@ router.get("/get", async (request, response) => {
     connection.query(queryString, (erroSQL, returnSQL) => {
         if (erroSQL) {
             response.status(404).json({"Error": erroSQL.sqlMessage});
-            throw erroSQL.sqlMessage;
         }
         response.status(200).json(returnSQL);
     });
@@ -28,7 +27,6 @@ router.post("/post", async (request, response) => {
     connection.query(queryString, (erroSQL, returnSQL) => {
         if (erroSQL) {
             response.status(401).json({"Error": erroSQL.sqlMessage});
-            throw erroSQL;
         }
         response.status(201).json(returnSQL);
     });
@@ -42,7 +40,6 @@ router.delete("/delete", async (request, response) => {
     connection.query(queryString, (erroSQL, returnSQL) => {
         if (erroSQL) {
             response.status(401).json({"Error": erroSQL.sqlMessage});
-            throw erroSQL.sqlMessage;
         };
         response.status(200).json(returnSQL);
     });
@@ -57,7 +54,6 @@ router.put("/put", async (request, response) => {
     connection.query(queryString, (erroSQL, returnSQL) => {
         if (erroSQL) {
             response.status(401).json({"Error": erroSQL.sqlMessage});
-            throw erroSQL.sqlMessage;
         }
         response.status(200).json(returnSQL);
     });
