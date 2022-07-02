@@ -6,70 +6,76 @@ connection.connect();
 
 let queryString;
 
-router.get("/get", (request, response) => {
+router.get("/get", async (request, response) => {
 
-    queryString = get();
+    queryString = await get();
     
-    connection.query(queryString, (erroSQL, returnSQL) => {
-        if (erroSQL) throw erroSQL;
-        if (returnSQL !== "") {
-            response.status(200).json(returnSQL);
-        } else {
-            response.status(404).json({Error: "Não foi possível retornar as informações solicitadas"});
-        }
-    });
-
-});
-
-router.post("/post", (request, response) => {
-    
-    if (request.body.nome_produto != undefined && request.body.valor_produto != undefined) {
-    
-    const nomeProduto = request.body.nome_produto;
-    const valorProduto = request.body.valor_produto;
-
-    queryString = post(nomeProduto, valorProduto);
- 
+    try {
         connection.query(queryString, (erroSQL, returnSQL) => {
             if (erroSQL) throw erroSQL;
-            response.status(201).json(returnSQL);
+            if (returnSQL !== "") {
+                response.status(200).json(returnSQL);
+            } 
         });
-    }else {
-        response.status(401).json({"Error": "Verifique os parâmentros informados"});
+    } catch (error) {
+        response.status(404).json({Error: "Não foi possível retornar as informações solicitadas"});
+    } finally {
+        console.log("Requisição Concluída");
     }
 });
 
-router.delete("/delete", (request, response) => {
-    console.log(request.query.id_produto);
-    if (request.query.id_produto !== undefined) {
-        const idProduto = request.query.id_produto;
+router.post("/post", async (request, response) => {
+        const nomeProduto = request.body.nome_produto;
+        const valorProduto = request.body.valor_produto;
+        
+        queryString = await post(nomeProduto, valorProduto);
 
-        queryString = del(idProduto);
+        try {
+            connection.query(queryString, (erroSQL, returnSQL) => {
+                if (erroSQL) throw erroSQL;
+                response.status(201).json(returnSQL);
+            });
+        } catch (error) {
+            response.status(401).json({"Error": error});
+        } finally {
+            console.log("Requisição Concluída");
+        }
+});
 
+router.delete("/delete", async (request, response) => {
+    const idProduto = request.query.id_produto;
+
+    queryString = await del(idProduto);
+
+    try {
         if (idProduto != undefined) {
             connection.query(queryString, (erroSQL, returnSQL) => {
                 if (erroSQL) throw erroSQL;
                 response.status(200).json(returnSQL);
             });
         }  
-    } else {
+    } catch (error) {
         response.status(401).json({"Error": "Verifique os parâmentros informados"});
+    } finally {
+        console.log("Requisição Concluída");
     }
 });
 
-router.put("/put", (request, response) => {
-    if (request.body.valor_produto != undefined && request.query.id_produto != undefined) {
-        const newValue = request.body.valor_produto;
-        const idProduto = request.query.id_produto;
+router.put("/put", async (request, response) => {
+    const newValue = request.body.valor_produto;
+    const idProduto = request.query.id_produto;
 
-        queryString = put(newValue, idProduto);
+    queryString = await put(newValue, idProduto);
 
+    try {
         connection.query(queryString, (erroSQL, returnSQL) => {
             if (erroSQL) throw erroSQL;
             response.status(200).json(returnSQL);
         });
-    } else {
+    } catch (error) {
         response.status(401).json({"Error": "Verifique os parâmentros informados"});
+    } finally {
+        console.log("Requisição Concluída");
     }
 });
 
