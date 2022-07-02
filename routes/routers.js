@@ -18,7 +18,7 @@ router.get("/get", async (request, response) => {
             } 
         });
     } catch (error) {
-        response.status(404).json({Error: "Não foi possível retornar as informações solicitadas"});
+        response.status(404).json({"Error": error.message});
     } finally {
         console.log("Requisição Concluída");
     }
@@ -36,7 +36,7 @@ router.post("/post", async (request, response) => {
                 response.status(201).json(returnSQL);
             });
         } catch (error) {
-            response.status(401).json({"Error": error});
+            response.status(401).json({"Error": error.message});
         } finally {
             console.log("Requisição Concluída");
         }
@@ -55,7 +55,7 @@ router.delete("/delete", async (request, response) => {
             });
         }  
     } catch (error) {
-        response.status(401).json({"Error": "Verifique os parâmentros informados"});
+        response.status(401).json({"Error": error.message});
     } finally {
         console.log("Requisição Concluída");
     }
@@ -73,7 +73,7 @@ router.put("/put", async (request, response) => {
             response.status(200).json(returnSQL);
         });
     } catch (error) {
-        response.status(401).json({"Error": "Verifique os parâmentros informados"});
+        response.status(401).json({"Error": error.message});
     } finally {
         console.log("Requisição Concluída");
     }
