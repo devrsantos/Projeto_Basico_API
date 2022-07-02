@@ -10,36 +10,28 @@ router.get("/get", async (request, response) => {
 
     queryString = await get();
     
-    try {
-        connection.query(queryString, (erroSQL, returnSQL) => {
-            if (erroSQL) throw erroSQL;
-            if (returnSQL !== "") {
-                response.status(200).json(returnSQL);
-            } 
-        });
-    } catch (error) {
-        response.status(404).json({"Error": error.message});
-    } finally {
-        console.log("Requisição Concluída");
-    }
+    connection.query(queryString, (erroSQL, returnSQL) => {
+        if (erroSQL) {
+            response.status(404).json({"Error": erroSQL.sqlMessage});
+            throw erroSQL.sqlMessage;
+        }
+        response.status(200).json(returnSQL);
+    });
 });
 
 router.post("/post", async (request, response) => {
-        const nomeProduto = request.body.nome_produto;
-        const valorProduto = request.body.valor_produto;
+    const nomeProduto = request.body.nome_produto;
+    const valorProduto = request.body.valor_produto;
         
-        queryString = await post(nomeProduto, valorProduto);
+    queryString = await post(nomeProduto, valorProduto);
 
-        try {
-            connection.query(queryString, (erroSQL, returnSQL) => {
-                if (erroSQL) throw erroSQL;
-                response.status(201).json(returnSQL);
-            });
-        } catch (error) {
-            response.status(401).json({"Error": error.message});
-        } finally {
-            console.log("Requisição Concluída");
+    connection.query(queryString, (erroSQL, returnSQL) => {
+        if (erroSQL) {
+            response.status(401).json({"Error": erroSQL.sqlMessage});
+            throw erroSQL;
         }
+        response.status(201).json(returnSQL);
+    });
 });
 
 router.delete("/delete", async (request, response) => {
@@ -47,18 +39,13 @@ router.delete("/delete", async (request, response) => {
 
     queryString = await del(idProduto);
 
-    try {
-        if (idProduto != undefined) {
-            connection.query(queryString, (erroSQL, returnSQL) => {
-                if (erroSQL) throw erroSQL;
-                response.status(200).json(returnSQL);
-            });
-        }  
-    } catch (error) {
-        response.status(401).json({"Error": error.message});
-    } finally {
-        console.log("Requisição Concluída");
-    }
+    connection.query(queryString, (erroSQL, returnSQL) => {
+        if (erroSQL) {
+            response.status(401).json({"Error": erroSQL.sqlMessage});
+            throw erroSQL.sqlMessage;
+        };
+        response.status(200).json(returnSQL);
+    });
 });
 
 router.put("/put", async (request, response) => {
@@ -67,16 +54,13 @@ router.put("/put", async (request, response) => {
 
     queryString = await put(newValue, idProduto);
 
-    try {
-        connection.query(queryString, (erroSQL, returnSQL) => {
-            if (erroSQL) throw erroSQL;
-            response.status(200).json(returnSQL);
-        });
-    } catch (error) {
-        response.status(401).json({"Error": error.message});
-    } finally {
-        console.log("Requisição Concluída");
-    }
+    connection.query(queryString, (erroSQL, returnSQL) => {
+        if (erroSQL) {
+            response.status(401).json({"Error": erroSQL.sqlMessage});
+            throw erroSQL.sqlMessage;
+        }
+        response.status(200).json(returnSQL);
+    });
 });
 
 module.exports = router;
